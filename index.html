@@ -232,7 +232,12 @@
   <section id="home">
     <div class="hero">
       <!-- 背景影片（寬貼合視窗） -->
-      <video class="bg" src="Eco/GameVideo.mp4" autoplay muted loop playsinline preload="auto"></video>
+      <iframe
+            id="ytPlayer"
+            src="https://www.youtube.com/embed/PoxPHQ_lVPY?rel=0&modestbranding=1&playsinline=1"
+            title="EcoWorld Trailer"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
 
       <!-- Logo 疊在影片上 -->
       <div class="logo-wrap">
@@ -302,7 +307,7 @@
   <section id="video">
     <div class="container">
       <h2>宣傳影片</h2>
-      <p class="lead">快速掌握玩法核心與願景</p>
+      <p class="lead">遊戲展示</p>
 
       <div class="video-wrap">
         <!-- YouTube 先嘗試 -->
@@ -330,7 +335,7 @@
   <section id="awards">
     <div class="container">
       <h2>得獎與參賽紀錄</h2>
-      <p class="lead">由 Eco/Award/ 中的圖片檔名自動解析（格式：比賽名-獎項名.ext）</p>
+      <p class="lead"></p>
 
       <div class="card">
         <table id="awards-table" aria-label="得獎表格">
@@ -400,7 +405,7 @@
     <div class="container">
       <div class="team-head">
         <h2>著火杆杆工作室</h2>
-        <p class="team-sub">以街頭感視覺與資料驅動系統打造 ESG 題材的互動遊戲體驗。</p>
+        <p class="team-sub"></p>
       </div>
       <div class="mentor"><strong>指導老師：</strong>盧家湄</div>
 
@@ -479,9 +484,6 @@
 
     // 在這裡填入你的檔名（位於 Eco/Award/ 之下）
     const AWARD_FILES = [
-      '2025 YesMaker 創意競賽-未.png',
-      '第六屆高科杯-未',
-      // '永續設計競賽-入選.webp'
     ];
 
     const awardsTBody = document.querySelector('#awards-table tbody');
