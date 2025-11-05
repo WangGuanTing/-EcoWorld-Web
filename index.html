@@ -58,6 +58,11 @@
       display:grid; place-items:center;
       overflow:hidden;
     }
+    .hero iframe.bg{
+      position:absolute; inset:0; width:100%; height:100%;
+      border:0;
+      pointer-events:none; /* 讓上層的 Logo/按鈕可被點擊 */
+    }
     .hero video.bg{
       position:absolute; inset:0; width:100%; height:100%;
       object-fit:cover; filter:saturate(1.05) contrast(1.05) brightness(.9);
@@ -232,8 +237,15 @@
   <section id="home">
     <div class="hero">
       <!-- 背景影片（寬貼合視窗） -->
-      <video class="bg" src="https://www.youtube.com/embed/PoxPHQ_lVPY?rel=0&modestbranding=1&playsinline=1" autoplay muted loop playsinline preload="auto"></video>
-
+      <!-- 背景影片（YouTube iframe 版本） -->
+      <iframe
+        class="bg"
+        src="https://www.youtube.com/embed/PoxPHQ_lVPY?rel=0&modestbranding=1&playsinline=1&controls=0&autoplay=1&mute=1&loop=1&playlist=PoxPHQ_lVPY"
+        title="EcoWorld 背景影片"
+        allow="autoplay; encrypted-media; picture-in-picture; web-share"
+        allowfullscreen
+        ></iframe>
+      
       <!-- Logo 疊在影片上 -->
       <div class="logo-wrap">
         <img class="logo" src="Eco/Logo.png" alt="EcoWorld Logo">
