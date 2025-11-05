@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoWorld｜官方網站</title>
+  <style>
+    :root{
+      --bg:#0c0f14;
+      --panel:#11161d;
+      --muted:#000000;
+      --text:#000000;
+      --brand:#7EAD7A;
+      --brand-2:#6cc0ff;
+      --radius:16px;
+      --maxw:1100px;
+      --nav-h:64px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; background:#bfd8bd;
+      color:var(--text); font:16px/1.6 system-ui,Segoe UI,Roboto,Helvetica,Arial;
+    }
+    a{color:inherit; text-decoration:none}
+    img, video{max-width:100%; display:block}
+    .container{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+
+    /* ===== Sticky Top Nav ===== */
+    header{
+      position:sticky; top:0; z-index:1000;
+      backdrop-filter: blur(10px);
+      background:rgba(10,13,18,.6);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    nav{
+      height:var(--nav-h); display:flex; align-items:center; gap:12px;
+      justify-content:center;
+    }
+    nav a{
+      padding:8px 14px; border-radius:999px; color:var(--muted);
+      transition:.2s ease; font-weight:600; letter-spacing:.02em;
+    }
+    nav a:hover, nav a.is-active{
+      color:#00110b; background:linear-gradient(135deg,var(--brand),#7EAD7A);
+      box-shadow:0 6px 20px rgba(53,208,166,.25);
+    }
+
+    /* ===== Sections common ===== */
+    section{scroll-margin-top:calc(var(--nav-h) + 20px); padding:64px 0}
+    h2{margin:0 0 16px; font-size:clamp(24px,3vw,34px)}
+    p.lead{color:var(--muted); margin:8px 0 0}
+
+    /* ===== Home (Logo + video) ===== */
+    #home{padding:0}
+    .hero{
+      position:relative; min-height:calc(100dvh - var(--nav-h));
+      display:grid; place-items:center;
+      overflow:hidden;
+    }
+    .hero video.bg{
+      position:absolute; inset:0; width:100%; height:100%;
+      object-fit:cover; filter:saturate(1.05) contrast(1.05) brightness(.9);
+      opacity:.9;
+    }
+    .hero::after{
+      content:""; position:absolute; inset:0;
+      background:radial-gradient(60% 60% at 50% 50%,transparent, rgba(0,0,0,.55));
+    }
+    .logo-wrap{
+      position:relative; z-index:1; text-align:center;
+      padding:22px 26px; border-radius:24px;
+      background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 40px rgba(109,255,212,.06);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    }
+    .logo{
+      width:min(70vw,520px);
+      border-radius:18px;
+    }
+
+    /* ===== About (4 alternating rows) ===== */
+    .about-grid{display:grid; gap:28px}
+    .about-row{
+      display:grid; gap:24px; align-items:center;
+      grid-template-columns: 1fr 1fr;
+      background:linear-gradient(180deg,#7EAD7A,#7EAD7A);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius); padding:22px;
+    }
+    .about-media{
+      aspect-ratio:16/9; border-radius:12px; overflow:hidden;
+      background:#101622; border:1px solid rgba(255,255,255,.08);
+    }
+    .about-copy h3{margin:0 0 6px}
+    .about-copy p{color:var(--muted); margin:0}
+    @media (max-width:900px){
+      .about-row{grid-template-columns:1fr}
+    }
+
+    /* ===== Video (YouTube 16:9) ===== */
+    .video-wrap{
+      position:relative; width:100%; padding-top:56.25%;
+      border-radius:16px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      background:#000;
+    }
+    .video-wrap iframe{
+      position:absolute; inset:0; width:100%; height:100%; border:0;
+    }
+    /* Fallback 影片鋪滿容器（預設隱藏） */
+    .video-wrap .fallback{
+      position:absolute; inset:0; width:100%; height:100%;
+      display:none; object-fit:cover; background:#000; border:0;
+    }
+    .yt-wrap{ position:absolute; inset:0; }
+
+    /* 切換按鈕 */
+    .switch-btn{
+      margin-top:12px; padding:8px 14px; border:0; cursor:pointer;
+      border-radius:999px; font-weight:700;
+      background:linear-gradient(135deg,var(--brand),var(--brand));
+      color:#00110b; box-shadow:0 6px 20px rgba(53,208,166,.25);
+    }
+    .switch-btn:active{ transform:translateY(1px); }
+
+    /* ===== Awards (table) ===== */
+    .card{
+      background:linear-gradient(180deg,#7EAD7A,#7EAD7A);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      padding:22px;
+    }
+    table{width:100%; border-collapse:collapse; overflow:hidden}
+    th,td{padding:12px 10px; text-align:left}
+    thead th{
+      color:#000000; font-weight:700; letter-spacing:.04em;
+      border-bottom:1px solid rgb(69, 94, 66);
+    }
+    tbody tr{border-bottom:1px solid rgb(69, 94, 66)}
+    tbody tr:last-child{border-bottom:none}
+    td img{height:40px; border-radius:8px; border:1px solid rgba(255,255,255,.12)}
+
+    /* ===== Policies (two images + text) ===== */
+    .policy-grid{
+      display:grid; grid-template-columns:1fr 1fr; gap:18px;
+    }
+    .policy-item{
+      border:1px solid rgba(255,255,255,.08); border-radius:14px; overflow:hidden;
+      background:#7EAD7A; transition:.2s ease; display:flex; flex-direction:column;
+    }
+    .policy-item:hover{transform:translateY(-2px)}
+    .policy-thumb{aspect-ratio:16/9; background:#101622; object-fit:cover}
+    .policy-body{padding:12px 14px}
+    .policy-title{font-weight:700; margin:0 0 6px}
+    .policy-desc{margin:0; color:var(--muted)}
+    .policy-link{margin:10px 14px 14px; width:max-content;
+      padding:8px 12px; border-radius:999px; font-weight:700;
+      background:#fffddb; color:#001326;
+    }
+    @media (max-width:900px){
+      .policy-grid{grid-template-columns:1fr}
+    }
+
+    /* ===== Icons (rating + unity) ===== */
+    .icons{
+      display:flex; gap:18px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-start;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:999px;
+      background:linear-gradient(135deg,#7ead7a,#7ead7a);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .badge img{height:32px; width:auto; display:block}
+
+    /* ===== Team ===== */
+    .team-head{text-align:center; margin-bottom:16px}
+    .team-sub{color:var(--muted); margin-top:8px}
+    .mentor{margin:18px 0 26px; text-align:center}
+    .team-links{
+      display:flex; gap:16px; justify-content:space-between; flex-wrap:wrap;
+    }
+    .team-card{
+      flex:1 1 220px; min-width:220px; max-width:calc(25% - 12px);
+      background:#7ead7a; border:1px solid rgba(255,255,255,.08);
+      border-radius:14px; overflow:hidden; display:flex; flex-direction:column;
+    }
+    .team-thumb{aspect-ratio:4/3; object-fit:cover; background:#121724}
+    .team-body{padding:12px 12px 16px}
+    .team-title{font-weight:700; margin:0 0 6px}
+    .team-caption{color:var(--muted); margin:0}
+    @media (max-width:900px){
+      .team-card{max-width:100%}
+    }
+
+    /* ===== Footer ===== */
+    footer{
+      padding:28px 0 36px; border-top:1px solid rgba(255,255,255,.08);
+      background:radial-gradient(60% 60% at 50% -10%, #2f412e, transparent 60%);
+    }
+    .socials{
+      display:flex; gap:12px; justify-content:center; margin-bottom:10px;
+    }
+    .soc{
+      width:42px; height:42px; border-radius:999px; display:grid; place-items:center;
+      background:linear-gradient(135deg,#7ead7a,#7ead7a);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 8px 20px rgba(0,0,0,.25);
+      font-weight:900; letter-spacing:.06em;
+    }
+    .copy{color:#8fa3b8; text-align:center; font-size:14px}
+  </style>
+</head>
+<body>
+
+  <!-- ===== Top Nav ===== -->
+  <header id="top-nav">
+    <nav class="container">
+      <a href="#home"   class="js-scroll">主頁</a>
+      <a href="#about"  class="js-scroll">遊戲介紹</a>
+      <a href="#video"  class="js-scroll">影片</a>
+      <a href="#awards" class="js-scroll">得獎</a>
+      <a href="#team"   class="js-scroll">開發人員</a>
+    </nav>
+  </header>
+
+  <!-- ===== Home ===== -->
+  <section id="home">
+    <div class="hero">
+      <!-- 背景影片（寬貼合視窗） -->
+      <video class="bg" src="Eco/GameVideo.mp4" autoplay muted loop playsinline preload="auto"></video>
+
+      <!-- Logo 疊在影片上 -->
+      <div class="logo-wrap">
+        <img class="logo" src="Eco/Logo.png" alt="EcoWorld Logo">
+        <p class="lead">將日常永續行動，化為你的城市成長</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== About (4 alternating rows) ===== -->
+  <section id="about">
+    <div class="container">
+      <h2>遊戲介紹</h2>
+      <p class="lead">四個面向帶你快速了解 EcoWorld 的玩法與風格</p>
+      <div class="about-grid">
+
+        <!-- (1) 遊戲簡介（影片+文字） -->
+        <article class="about-row">
+          <div class="about-media">
+            <video src="Eco/Main.mp4" autoplay muted loop playsinline preload="auto"></video>
+          </div>
+          <div class="about-copy">
+            <h3>開啟用續生活，建造屬於你的星球</h3>
+            <p>你來到了一個由環境、社會與治理交織的世界，你將以日常生活中的每一步，都會讓你的星球變得更好。在EcoWorld中，你現實中的永續行動將會化為遊戲內的進展，讓你能建設、購買、升級裝飾你的星球，讓EcoEorld和你一起在永續的道路越走越遠。</p>
+          </div>
+        </article>
+
+        <!-- (2) 遊戲任務（文字+影片） -->
+        <article class="about-row">
+          <div class="about-copy">
+            <h3>獻給你的環保懸賞任務</h3>
+            <p>不只在遊戲中進行環保、永續行為，EcoWorld每天都會生成永續行動任務，包括減塑、步行、公共運輸、在地參與……等等，為你的生活和星球添一份力。</p>
+          </div>
+          <div class="about-media">
+            <video src="Eco/Task.mp4" autoplay muted loop playsinline preload="auto"></video>
+          </div>
+        </article>
+
+        <!-- (3) 遊戲建設（影片+文字） -->
+        <article class="about-row">
+          <div class="about-media">
+            <video src="Eco/Build.mp4" autoplay muted loop playsinline preload="auto"></video>
+          </div>
+          <div class="about-copy">
+            <h3>裝飾管理你的星球</h3>
+            <p>EcoWorld 是一款富有挑戰性的建設遊戲，除了選擇自己喜歡的建築建設，還要顧及星球上居民的生活需求，和對環境汙染的管理與評估，才能讓你的星球更進一步變好。</p>
+          </div>
+        </article>
+
+        <!-- (4) 遊戲美術（文字+圖片） -->
+        <article class="about-row">
+          <div class="about-copy">
+            <h3>有趣可愛的手繪風格</h3>
+            <p>EcoWoeld 的世界以活潑、可愛的展現，星球上的建築、可愛的NPC都是以手繪2D風格呈現。
+你會驚呀的發現每個可愛的建築都是和生活中常見的某種廢棄物品結合，我們以這樣的設計來讓這些物品在我們的生活煥然一新。</p>
+          </div>
+          <div class="about-media">
+            <img src="Eco/Art.png" alt="遊戲美術">
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Video (YouTube with fallback) ===== -->
+  <section id="video">
+    <div class="container">
+      <h2>宣傳影片</h2>
+      <p class="lead">快速掌握玩法核心與願景</p>
+
+      <div class="video-wrap">
+        <!-- YouTube 先嘗試 -->
+        <div id="ytWrap" class="yt-wrap">
+          <iframe
+            id="ytPlayer"
+            src="https://www.youtube.com/embed/PoxPHQ_lVPY?rel=0&modestbranding=1&playsinline=1"
+            title="EcoWorld Trailer"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+
+        <!-- Fallback 本地影片：預設隱藏，失敗時自動顯示 -->
+        <video id="fallbackVideo" class="fallback" src="Eco/遊戲手機錄屏.mp4"
+               controls playsinline preload="metadata"></video>
+      </div>
+
+      <button class="switch-btn" type="button" id="forceFallbackBtn" aria-controls="fallbackVideo">
+        播放失敗？改用本地影片
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== Awards (table from filenames) ===== -->
+  <section id="awards">
+    <div class="container">
+      <h2>得獎與參賽紀錄</h2>
+      <p class="lead">由 Eco/Award/ 中的圖片檔名自動解析（格式：比賽名-獎項名.ext）</p>
+
+      <div class="card">
+        <table id="awards-table" aria-label="得獎表格">
+          <thead>
+            <tr>
+              <th>參賽比賽</th>
+              <th>獎項</th>
+              <th>圖片</th>
+            </tr>
+          </thead>
+          <tbody><!-- JS 產生 --></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Policies (two images + text + link) ===== -->
+  <section id="policies">
+    <div class="container">
+      <h2>使用者服務條款與隱私權政策</h2>
+      <div class="policy-grid">
+        <!-- 服務條款 -->
+        <article class="policy-item">
+          <img class="policy-thumb" src="Eco/terms-thumb.png" alt="使用者服務條款">
+          <div class="policy-body">
+            <h3 class="policy-title">使用者服務條款</h3>
+            <p class="policy-desc">瞭解使用本服務需遵循的規則與權利義務。</p>
+          </div>
+          <a class="policy-link" href="https://wangguanting.github.io/-EcoWorld-User-Terms-of-Service/" target="_blank" rel="noopener">閱讀條款</a>
+        </article>
+
+        <!-- 隱私權政策 -->
+        <article class="policy-item">
+          <img class="policy-thumb" src="Eco/privacy-thumb.png" alt="隱私權政策">
+          <div class="policy-body">
+            <h3 class="policy-title">隱私權政策</h3>
+            <p class="policy-desc">了解我們如何蒐集、使用與保護您的資料。</p>
+          </div>
+          <a class="policy-link" href="https://wangguanting.github.io/-EcoWorld-privacy-policy/" target="_blank" rel="noopener">閱讀政策</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Icons (rating + unity) ===== -->
+  <section id="icons">
+    <div class="container">
+      <h2>圖標標示</h2>
+      <div class="icons">
+        <!-- 普遍級 0+ -->
+        <div class="badge" title="分級：普遍級">
+          <img src="Eco/0+.png" alt="普遍級圖標">
+          <span>分級：普遍級</span>
+        </div>
+
+        <!-- Made with Unity -->
+        <div class="badge" title="Made with Unity">
+          <img src="Eco/made_with_unity.png" alt="Made with Unity">
+          <span>Made with Unity</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Team ===== -->
+  <section id="team">
+    <div class="container">
+      <div class="team-head">
+        <h2>著火杆杆工作室</h2>
+        <p class="team-sub">以街頭感視覺與資料驅動系統打造 ESG 題材的互動遊戲體驗。</p>
+      </div>
+      <div class="mentor"><strong>指導老師：</strong>盧家湄</div>
+
+      <div class="team-links">
+        <!-- 圖片卡 1 -->
+        <a class="team-card" href="https://example.com/link1" target="_blank" rel="noopener">
+          <img class="team-thumb" src="Eco/41132139.png" alt="連結一縮圖">
+          <div class="team-body">
+            <div class="team-title">林耿賢</div>
+            <p class="team-caption">企劃</p>
+          </div>
+        </a>
+
+        <!-- 圖片卡 2 -->
+        <a class="team-card" href="https://example.com/link2" target="_blank" rel="noopener">
+          <img class="team-thumb" src="Eco/41132205.png" alt="連結二縮圖">
+          <div class="team-body">
+            <div class="team-title">蔡坤佑</div>
+            <p class="team-caption">音效</p>
+          </div>
+        </a>
+
+        <!-- 圖片卡 3 -->
+        <a class="team-card" href="https://example.com/link3" target="_blank" rel="noopener">
+          <img class="team-thumb" src="Eco/41132138.png" alt="連結三縮圖">
+          <div class="team-body">
+            <div class="team-title">王貫霆</div>
+            <p class="team-caption">程式</p>
+          </div>
+        </a>
+
+        <!-- 圖片卡 4 -->
+        <a class="team-card" href="https://example.com/link4" target="_blank" rel="noopener">
+          <img class="team-thumb" src="Eco/41132221.png" alt="連結四縮圖">
+          <div class="team-body">
+            <div class="team-title">林詩愉</div>
+            <p class="team-caption">美術</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer id="footer">
+    <div class="container">
+      <div class="socials">
+        <a class="soc" href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">Y</a>
+        <a class="soc" href="https://x.com/" target="_blank" rel="noopener" aria-label="Twitter/X">X</a>
+        <a class="soc" href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+      </div>
+      <div class="copy">© <span id="year"></span> 著火杆杆工作室</div>
+    </div>
+  </footer>
+
+  <!-- ===== JS ===== -->
+  <script>
+    // 年份自動
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 滾動導覽高亮
+    const navLinks = [...document.querySelectorAll('nav a.js-scroll')];
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const id = '#'+entry.target.id;
+          navLinks.forEach(a=>a.classList.toggle('is-active', a.getAttribute('href')===id));
+        }
+      });
+    }, {rootMargin: '-50% 0px -50% 0px', threshold: 0});
+    sections.forEach(sec=>io.observe(sec));
+
+    // ===== Awards：從檔名解析「比賽名-獎項名」並渲染表格 =====
+    const AWARD_FOLDER = 'Eco/Award/';
+
+    // 在這裡填入你的檔名（位於 Eco/Award/ 之下）
+    const AWARD_FILES = [
+      '2025 YesMaker 創意競賽-未.png',
+      '第六屆高科杯-未',
+      // '永續設計競賽-入選.webp'
+    ];
+
+    const awardsTBody = document.querySelector('#awards-table tbody');
+
+    AWARD_FILES.forEach(file=>{
+      const base = file.replace(/\.[^/.]+$/, '');
+      const parts = base.split('-');
+      const contest = (parts[0]||'').trim();
+      const prize   = (parts[1]||'').trim();
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${contest}</td>
+        <td>${prize}</td>
+        <td><img src="${AWARD_FOLDER + file}" alt="${base}"></td>
+      `;
+      awardsTBody.appendChild(tr);
+    });
+
+    // === YouTube 載入失敗時自動切到本地影片 ===
+    (function(){
+      const ytWrap = document.getElementById('ytWrap');
+      const yt = document.getElementById('ytPlayer');
+      const fb = document.getElementById('fallbackVideo');
+      const btn = document.getElementById('forceFallbackBtn');
+      if(!yt || !fb || !ytWrap) return;
+
+      let loaded = false;
+      const FAILSAFE_MS = 5000; // 5 秒內沒載入就切換
+
+      function showFallback(){
+        try { yt.src = 'about:blank'; } catch(e){}
+        ytWrap.style.display = 'none';
+        fb.style.display = 'block';
+        fb.play().catch(()=>{});
+      }
+
+      yt.addEventListener('load', () => {
+        loaded = true;
+      });
+
+      // 保險機制：超時未載入 → fallback
+      setTimeout(() => { if(!loaded) showFallback(); }, FAILSAFE_MS);
+
+      // 手動切換按鈕
+      btn && btn.addEventListener('click', showFallback);
+    })();
+  </script>
+</body>
+</html>
