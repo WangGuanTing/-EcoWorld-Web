@@ -10,18 +10,44 @@
       --panel:#11161d;
       --muted:#000000;
       --text:#000000;
-      --brand:#7EAD7A;
+      --brand:#d2ffdf;
       --brand-2:#6cc0ff;
       --radius:16px;
       --maxw:1100px;
       --nav-h:64px;
+      /* 新增：置中純色區塊顏色（可調整透明度） */
+      --center-strip: rgba(255,255,255,.78);
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:smooth; height:100%}
     body{
-      margin:0; background:#bfd8bd;
+      margin:0; min-height:100%;
+      /* 背景圖維持鋪滿（在最底層） */
+      background:#bfd8bd9a url('Eco/背景_早.png') center / cover fixed no-repeat;
       color:var(--text); font:16px/1.6 system-ui,Segoe UI,Roboto,Helvetica,Arial;
     }
+    @media (max-width: 820px){
+      body{ background-attachment: scroll; }
+    }
+
+    /* === 置中純色區塊（在背景圖上、內容下） === */
+    .page-wrap{ position:relative; }
+    .page-wrap::before{
+      content:"";
+      position:absolute;
+      top:0; bottom:0; /* 與頁面同長 */
+      left:50%;
+      transform:translateX(-50%);
+      /* 寬度包住所有主要內容（container 1100 + 左右各 20 padding） */
+      width:min(100%, calc(var(--maxw) + 40px));
+      background:#ffffffcc;  /* 純色（含透明度以免遮擋背景） */
+      z-index:0;
+      pointer-events:none; /* 不遮蔽互動 */
+      border-radius:16px;  /* 視覺更柔和，可自行移除 */
+    }
+    /* 所有主要區塊在純色區塊之上 */
+    header, section, footer{ position:relative; z-index:1; }
+
     a{color:inherit; text-decoration:none}
     img, video{max-width:100%; display:block}
     .container{max-width:var(--maxw); margin:0 auto; padding:0 20px}
@@ -84,7 +110,7 @@
     .about-row{
       display:grid; gap:24px; align-items:center;
       grid-template-columns: 1fr 1fr;
-      background:linear-gradient(180deg,#7EAD7A,#7EAD7A);
+      background:linear-gradient(180deg,#d2ffdf,#d2ffdf);
       border:1px solid rgba(255,255,255,.06);
       border-radius:var(--radius); padding:22px;
     }
@@ -109,14 +135,12 @@
     .video-wrap iframe{
       position:absolute; inset:0; width:100%; height:100%; border:0;
     }
-    /* Fallback 影片鋪滿容器（預設隱藏） */
     .video-wrap .fallback{
       position:absolute; inset:0; width:100%; height:100%;
       display:none; object-fit:cover; background:#000; border:0;
     }
     .yt-wrap{ position:absolute; inset:0; }
 
-    /* 切換按鈕 */
     .switch-btn{
       margin-top:12px; padding:8px 14px; border:0; cursor:pointer;
       border-radius:999px; font-weight:700;
@@ -127,7 +151,7 @@
 
     /* ===== Awards (table) ===== */
     .card{
-      background:linear-gradient(180deg,#7EAD7A,#7EAD7A);
+      background:linear-gradient(180deg,#d2ffdf,#d2ffdf);
       border:1px solid rgba(255,255,255,.06);
       border-radius:var(--radius);
       box-shadow:0 10px 30px rgba(0,0,0,.25);
@@ -149,7 +173,7 @@
     }
     .policy-item{
       border:1px solid rgba(255,255,255,.08); border-radius:14px; overflow:hidden;
-      background:#7EAD7A; transition:.2s ease; display:flex; flex-direction:column;
+      background:#d2ffdf; transition:.2s ease; display:flex; flex-direction:column;
     }
     .policy-item:hover{transform:translateY(-2px)}
     .policy-thumb{aspect-ratio:16/9; background:#101622; object-fit:cover}
@@ -172,7 +196,7 @@
     .badge{
       display:inline-flex; align-items:center; gap:10px;
       padding:10px 14px; border-radius:999px;
-      background:linear-gradient(135deg,#7ead7a,#7ead7a);
+      background:linear-gradient(135deg,#d2ffdf,#d2ffdf);
       border:1px solid rgba(255,255,255,.08);
     }
     .badge img{height:32px; width:auto; display:block}
@@ -186,7 +210,7 @@
     }
     .team-card{
       flex:1 1 220px; min-width:220px; max-width:calc(25% - 12px);
-      background:#7ead7a; border:1px solid rgba(255,255,255,.08);
+      background:#d2ffdf; border:1px solid rgba(255,255,255,.08);
       border-radius:14px; overflow:hidden; display:flex; flex-direction:column;
     }
     .team-thumb{aspect-ratio:4/3; object-fit:cover; background:#121724}
@@ -207,7 +231,7 @@
     }
     .soc{
       width:42px; height:42px; border-radius:999px; display:grid; place-items:center;
-      background:linear-gradient(135deg,#7ead7a,#7ead7a);
+      background:linear-gradient(135deg,#d2ffdf,#d2ffdf);
       border:1px solid rgba(255,255,255,.08);
       box-shadow:0 8px 20px rgba(0,0,0,.25);
       font-weight:900; letter-spacing:.06em;
@@ -217,245 +241,239 @@
 </head>
 <body>
 
-  <!-- ===== Top Nav ===== -->
-  <header id="top-nav">
-    <nav class="container">
-      <a href="#home"   class="js-scroll">主頁</a>
-      <a href="#about"  class="js-scroll">遊戲介紹</a>
-      <a href="#video"  class="js-scroll">影片</a>
-      <a href="#awards" class="js-scroll">得獎</a>
-      <a href="#team"   class="js-scroll">開發人員</a>
-    </nav>
-  </header>
+  <!-- 用來承載整頁內容，並在其下方鋪一層置中純色區塊 -->
+  <div class="page-wrap">
 
-  <!-- ===== Home ===== -->
-  <section id="home">
-    <div class="hero">
-      <!-- 背景影片（寬貼合視窗） -->
-      <!-- 背景影片（YouTube iframe 版本） -->
-      <video class="bg" src="Eco/Main.mp4" autoplay muted loop playsinline preload="auto"></video>
-      
-      <!-- Logo 疊在影片上 -->
-      <div class="logo-wrap">
-        <img class="logo" src="Eco/Logo.png" alt="EcoWorld Logo">
-        <p class="lead">將日常永續行動，化為你的城市成長</p>
+    <!-- ===== Top Nav ===== -->
+    <header id="top-nav">
+      <nav class="container">
+        <a href="#home"   class="js-scroll">主頁</a>
+        <a href="#about"  class="js-scroll">遊戲介紹</a>
+        <a href="#video"  class="js-scroll">影片</a>
+        <a href="#awards" class="js-scroll">得獎</a>
+        <a href="#team"   class="js-scroll">開發人員</a>
+      </nav>
+    </header>
+
+    <!-- ===== Home ===== -->
+    <section id="home">
+      <div class="hero">
+        <!-- 背景影片（寬貼合視窗） -->
+        <video class="bg" src="Eco/GameVideo.mp4" autoplay muted loop playsinline preload="auto"></video>
+
+        <!-- Logo 疊在影片上 -->
+        <div class="logo-wrap">
+          <img class="logo" src="Eco/Logo.png" alt="EcoWorld Logo">
+          <p class="lead">將日常永續行動，化為你的城市成長</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== About (4 alternating rows) ===== -->
-  <section id="about">
-    <div class="container">
-      <h2>遊戲介紹</h2>
-      <p class="lead">四個面向帶你快速了解 EcoWorld 的玩法與風格</p>
-      <div class="about-grid">
+    <!-- ===== About (4 alternating rows) ===== -->
+    <section id="about">
+      <div class="container">
+        <h2>遊戲介紹</h2>
+        <p class="lead">四個面向帶你快速了解 EcoWorld 的玩法與風格</p>
+        <div class="about-grid">
 
-        <!-- (1) 遊戲簡介（影片+文字） -->
-        <article class="about-row">
-          <div class="about-media">
-            <video src="Eco/Main.mp4" autoplay muted loop playsinline preload="auto"></video>
-          </div>
-          <div class="about-copy">
-            <h3>開啟用續生活，建造屬於你的星球</h3>
-            <p>你來到了一個由環境、社會與治理交織的世界，你將以日常生活中的每一步，都會讓你的星球變得更好。在EcoWorld中，你現實中的永續行動將會化為遊戲內的進展，讓你能建設、購買、升級裝飾你的星球，讓EcoEorld和你一起在永續的道路越走越遠。</p>
-          </div>
-        </article>
+          <!-- (1) 遊戲簡介（影片+文字） -->
+          <article class="about-row">
+            <div class="about-media">
+              <video src="Eco/Main.mp4" autoplay muted loop playsinline preload="auto"></video>
+            </div>
+            <div class="about-copy">
+              <h3>開啟用續生活，建造屬於你的星球</h3>
+              <p>你來到了一個由環境、社會與治理交織的世界，你將以日常生活中的每一步，都會讓你的星球變得更好。在EcoWorld中，你現實中的永續行動將會化為遊戲內的進展，讓你能建設、購買、升級裝飾你的星球，讓EcoEorld和你一起在永續的道路越走越遠。</p>
+            </div>
+          </article>
 
-        <!-- (2) 遊戲任務（文字+影片） -->
-        <article class="about-row">
-          <div class="about-copy">
-            <h3>獻給你的環保懸賞任務</h3>
-            <p>不只在遊戲中進行環保、永續行為，EcoWorld每天都會生成永續行動任務，包括減塑、步行、公共運輸、在地參與……等等，為你的生活和星球添一份力。</p>
-          </div>
-          <div class="about-media">
-            <video src="Eco/Task.mp4" autoplay muted loop playsinline preload="auto"></video>
-          </div>
-        </article>
+          <!-- (2) 遊戲任務（文字+影片） -->
+          <article class="about-row">
+            <div class="about-copy">
+              <h3>獻給你的環保懸賞任務</h3>
+              <p>不只在遊戲中進行環保、永續行為，EcoWorld每天都會生成永續行動任務，包括減塑、步行、公共運輸、在地參與……等等，為你的生活和星球添一份力。</p>
+            </div>
+            <div class="about-media">
+              <video src="Eco/Task.mp4" autoplay muted loop playsinline preload="auto"></video>
+            </div>
+          </article>
 
-        <!-- (3) 遊戲建設（影片+文字） -->
-        <article class="about-row">
-          <div class="about-media">
-            <video src="Eco/Build.mp4" autoplay muted loop playsinline preload="auto"></video>
-          </div>
-          <div class="about-copy">
-            <h3>裝飾管理你的星球</h3>
-            <p>EcoWorld 是一款富有挑戰性的建設遊戲，除了選擇自己喜歡的建築建設，還要顧及星球上居民的生活需求，和對環境汙染的管理與評估，才能讓你的星球更進一步變好。</p>
-          </div>
-        </article>
+          <!-- (3) 遊戲建設（影片+文字） -->
+          <article class="about-row">
+            <div class="about-media">
+              <video src="Eco/Build.mp4" autoplay muted loop playsinline preload="auto"></video>
+            </div>
+            <div class="about-copy">
+              <h3>裝飾管理你的星球</h3>
+              <p>EcoWorld 是一款富有挑戰性的建設遊戲，除了選擇自己喜歡的建築建設，還要顧及星球上居民的生活需求，和對環境汙染的管理與評估，才能讓你的星球更進一步變好。</p>
+            </div>
+          </article>
 
-        <!-- (4) 遊戲美術（文字+圖片） -->
-        <article class="about-row">
-          <div class="about-copy">
-            <h3>有趣可愛的手繪風格</h3>
-            <p>EcoWoeld 的世界以活潑、可愛的展現，星球上的建築、可愛的NPC都是以手繪2D風格呈現。
+          <!-- (4) 遊戲美術（文字+圖片） -->
+          <article class="about-row">
+            <div class="about-copy">
+              <h3>有趣可愛的手繪風格</h3>
+              <p>EcoWoeld 的世界以活潑、可愛的展現，星球上的建築、可愛的NPC都是以手繪2D風格呈現。
 你會驚呀的發現每個可愛的建築都是和生活中常見的某種廢棄物品結合，我們以這樣的設計來讓這些物品在我們的生活煥然一新。</p>
-          </div>
-          <div class="about-media">
-            <img src="Eco/Art.png" alt="遊戲美術">
-          </div>
-        </article>
+            </div>
+            <div class="about-media">
+              <img src="Eco/Art.png" alt="遊戲美術">
+            </div>
+          </article>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Video (YouTube with fallback) ===== -->
-  <section id="video">
-    <div class="container">
-      <h2>宣傳影片</h2>
-      <p class="lead">遊戲展示</p>
-
-      <div class="video-wrap">
-        <!-- YouTube 先嘗試 -->
-        <div id="ytWrap" class="yt-wrap">
-          <iframe
-            id="ytPlayer"
-            src="https://www.youtube.com/embed/PoxPHQ_lVPY?rel=0&modestbranding=1&playsinline=1"
-            title="EcoWorld Trailer"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>
-        </div>
-
-        <!-- Fallback 本地影片：預設隱藏，失敗時自動顯示 -->
-        <video id="fallbackVideo" class="fallback" src="Eco/遊戲手機錄屏.mp4"
-               controls playsinline preload="metadata"></video>
-      </div>
-
-      <button class="switch-btn" type="button" id="forceFallbackBtn" aria-controls="fallbackVideo">
-        播放失敗？改用本地影片
-      </button>
-    </div>
-  </section>
-
-  <!-- ===== Awards (table from filenames) ===== -->
-  <section id="awards">
-    <div class="container">
-      <h2>得獎與參賽紀錄</h2>
-      <p class="lead"></p>
-
-      <div class="card">
-        <table id="awards-table" aria-label="得獎表格">
-          <thead>
-            <tr>
-              <th>參賽比賽</th>
-              <th>獎項</th>
-              <th>圖片</th>
-            </tr>
-          </thead>
-          <tbody><!-- JS 產生 --></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Policies (two images + text + link) ===== -->
-  <section id="policies">
-    <div class="container">
-      <h2>使用者服務條款與隱私權政策</h2>
-      <div class="policy-grid">
-        <!-- 服務條款 -->
-        <article class="policy-item">
-          <img class="policy-thumb" src="Eco/terms-thumb.png" alt="使用者服務條款">
-          <div class="policy-body">
-            <h3 class="policy-title">使用者服務條款</h3>
-            <p class="policy-desc">瞭解使用本服務需遵循的規則與權利義務。</p>
-          </div>
-          <a class="policy-link" href="https://wangguanting.github.io/-EcoWorld-User-Terms-of-Service/" target="_blank" rel="noopener">閱讀條款</a>
-        </article>
-
-        <!-- 隱私權政策 -->
-        <article class="policy-item">
-          <img class="policy-thumb" src="Eco/privacy-thumb.png" alt="隱私權政策">
-          <div class="policy-body">
-            <h3 class="policy-title">隱私權政策</h3>
-            <p class="policy-desc">了解我們如何蒐集、使用與保護您的資料。</p>
-          </div>
-          <a class="policy-link" href="https://wangguanting.github.io/-EcoWorld-privacy-policy/" target="_blank" rel="noopener">閱讀政策</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Icons (rating + unity) ===== -->
-  <section id="icons">
-    <div class="container">
-      <h2>圖標標示</h2>
-      <div class="icons">
-        <!-- 普遍級 0+ -->
-        <div class="badge" title="分級：普遍級">
-          <img src="Eco/0+.png" alt="普遍級圖標">
-          <span>分級：普遍級</span>
-        </div>
-
-        <!-- Made with Unity -->
-        <div class="badge" title="Made with Unity">
-          <img src="Eco/made_with_unity.png" alt="Made with Unity">
-          <span>Made with Unity</span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== Team ===== -->
-  <section id="team">
-    <div class="container">
-      <div class="team-head">
-        <h2>著火杆杆工作室</h2>
-        <p class="team-sub"></p>
+    <!-- ===== Video (YouTube with fallback) ===== -->
+    <section id="video">
+      <div class="container">
+        <h2>宣傳影片</h2>
+        <p class="lead">遊戲展示</p>
+
+        <div class="video-wrap">
+          <div id="ytWrap" class="yt-wrap">
+            <iframe
+              id="ytPlayer"
+              src="https://www.youtube.com/embed/PoxPHQ_lVPY?rel=0&modestbranding=1&playsinline=1"
+              title="EcoWorld Trailer"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+
+          <video id="fallbackVideo" class="fallback" src="Eco/遊戲手機錄屏.mp4"
+                controls playsinline preload="metadata"></video>
+        </div>
+
+        <button class="switch-btn" type="button" id="forceFallbackBtn" aria-controls="fallbackVideo">
+          播放失敗？改用本地影片
+        </button>
       </div>
-      <div class="mentor"><strong>指導老師：</strong>盧家湄</div>
+    </section>
 
-      <div class="team-links">
-        <!-- 圖片卡 1 -->
-        <a class="team-card" href="https://example.com/link1" target="_blank" rel="noopener">
-          <img class="team-thumb" src="Eco/41132139.png" alt="連結一縮圖">
-          <div class="team-body">
-            <div class="team-title">林耿賢</div>
-            <p class="team-caption">企劃</p>
-          </div>
-        </a>
+    <!-- ===== Awards (table from filenames) ===== -->
+    <section id="awards">
+      <div class="container">
+        <h2>得獎與參賽紀錄</h2>
+        <p class="lead"></p>
 
-        <!-- 圖片卡 2 -->
-        <a class="team-card" href="https://example.com/link2" target="_blank" rel="noopener">
-          <img class="team-thumb" src="Eco/41132205.png" alt="連結二縮圖">
-          <div class="team-body">
-            <div class="team-title">蔡坤佑</div>
-            <p class="team-caption">音效</p>
-          </div>
-        </a>
-
-        <!-- 圖片卡 3 -->
-        <a class="team-card" href="https://example.com/link3" target="_blank" rel="noopener">
-          <img class="team-thumb" src="Eco/41132138.png" alt="連結三縮圖">
-          <div class="team-body">
-            <div class="team-title">王貫霆</div>
-            <p class="team-caption">程式</p>
-          </div>
-        </a>
-
-        <!-- 圖片卡 4 -->
-        <a class="team-card" href="https://example.com/link4" target="_blank" rel="noopener">
-          <img class="team-thumb" src="Eco/41132221.png" alt="連結四縮圖">
-          <div class="team-body">
-            <div class="team-title">林詩愉</div>
-            <p class="team-caption">美術</p>
-          </div>
-        </a>
+        <div class="card">
+          <table id="awards-table" aria-label="得獎表格">
+            <thead>
+              <tr>
+                <th>參賽比賽</th>
+                <th>獎項</th>
+                <th>圖片</th>
+              </tr>
+            </thead>
+            <tbody><!-- JS 產生 --></tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== Footer ===== -->
-  <footer id="footer">
-    <div class="container">
-      <div class="socials">
-        <a class="soc" href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">Y</a>
-        <a class="soc" href="https://x.com/" target="_blank" rel="noopener" aria-label="Twitter/X">X</a>
-        <a class="soc" href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+    <!-- ===== Policies (two images + text + link) ===== -->
+    <section id="policies">
+      <div class="container">
+        <h2>使用者服務條款與隱私權政策</h2>
+        <div class="policy-grid">
+          <article class="policy-item">
+            <img class="policy-thumb" src="Eco/terms-thumb.png" alt="使用者服務條款">
+            <div class="policy-body">
+              <h3 class="policy-title">使用者服務條款</h3>
+              <p class="policy-desc">瞭解使用本服務需遵循的規則與權利義務。</p>
+            </div>
+            <a class="policy-link" href="https://wangguanting.github.io/-EcoWorld-User-Terms-of-Service/" target="_blank" rel="noopener">閱讀條款</a>
+          </article>
+
+          <article class="policy-item">
+            <img class="policy-thumb" src="Eco/privacy-thumb.png" alt="隱私權政策">
+            <div class="policy-body">
+              <h3 class="policy-title">隱私權政策</h3>
+              <p class="policy-desc">了解我們如何蒐集、使用與保護您的資料。</p>
+            </div>
+            <a class="policy-link" href="https://wangguanting.github.io/-EcoWorld-privacy-policy/" target="_blank" rel="noopener">閱讀政策</a>
+          </article>
+        </div>
       </div>
-      <div class="copy">© <span id="year"></span> 著火杆杆工作室</div>
-    </div>
-  </footer>
+    </section>
+
+    <!-- ===== Icons (rating + unity) ===== -->
+    <section id="icons">
+      <div class="container">
+        <h2>圖標標示</h2>
+        <div class="icons">
+          <div class="badge" title="分級：普遍級">
+            <img src="Eco/0+.png" alt="普遍級圖標">
+            <span>分級：普遍級</span>
+          </div>
+
+          <div class="badge" title="Made with Unity">
+            <img src="Eco/made_with_unity.png" alt="Made with Unity">
+            <span>Made with Unity</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Team ===== -->
+    <section id="team">
+      <div class="container">
+        <div class="team-head">
+          <h2>著火杆杆工作室</h2>
+          <p class="team-sub">以街頭感視覺與資料驅動系統打造 ESG 題材的互動遊戲體驗。</p>
+        </div>
+        <div class="mentor"><strong>指導老師：</strong>盧家湄</div>
+
+        <div class="team-links">
+          <a class="team-card" href="https://example.com/link1" target="_blank" rel="noopener">
+            <img class="team-thumb" src="Eco/41132139.png" alt="連結一縮圖">
+            <div class="team-body">
+              <div class="team-title">林耿賢</div>
+              <p class="team-caption">企劃</p>
+            </div>
+          </a>
+
+          <a class="team-card" href="https://example.com/link2" target="_blank" rel="noopener">
+            <img class="team-thumb" src="Eco/41132205.png" alt="連結二縮圖">
+            <div class="team-body">
+              <div class="team-title">蔡坤佑</div>
+              <p class="team-caption">音效</p>
+            </div>
+          </a>
+
+          <a class="team-card" href="https://example.com/link3" target="_blank" rel="noopener">
+            <img class="team-thumb" src="Eco/41132138.png" alt="連結三縮圖">
+            <div class="team-body">
+              <div class="team-title">王貫霆</div>
+              <p class="team-caption">程式</p>
+            </div>
+          </a>
+
+          <a class="team-card" href="https://example.com/link4" target="_blank" rel="noopener">
+            <img class="team-thumb" src="Eco/41132221.png" alt="連結四縮圖">
+            <div class="team-body">
+              <div class="team-title">林詩愉</div>
+              <p class="team-caption">美術</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer id="footer">
+      <div class="container">
+        <div class="socials">
+          <a class="soc" href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">Y</a>
+          <a class="soc" href="https://x.com/" target="_blank" rel="noopener" aria-label="Twitter/X">X</a>
+          <a class="soc" href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+        </div>
+        <div class="copy">© <span id="year"></span> 著火杆杆工作室</div>
+      </div>
+    </footer>
+
+  </div><!-- /page-wrap -->
 
   <!-- ===== JS ===== -->
   <script>
@@ -475,21 +493,18 @@
     }, {rootMargin: '-50% 0px -50% 0px', threshold: 0});
     sections.forEach(sec=>io.observe(sec));
 
-    // ===== Awards：從檔名解析「比賽名-獎項名」並渲染表格 =====
+    // ===== Awards：從檔名解析並渲染表格 =====
     const AWARD_FOLDER = 'Eco/Award/';
-
-    // 在這裡填入你的檔名（位於 Eco/Award/ 之下）
     const AWARD_FILES = [
+      '2025 YesMaker 創意競賽-未.png',
+      '第六屆高科杯-未',
     ];
-
     const awardsTBody = document.querySelector('#awards-table tbody');
-
     AWARD_FILES.forEach(file=>{
       const base = file.replace(/\.[^/.]+$/, '');
       const parts = base.split('-');
       const contest = (parts[0]||'').trim();
       const prize   = (parts[1]||'').trim();
-
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${contest}</td>
@@ -517,14 +532,8 @@
         fb.play().catch(()=>{});
       }
 
-      yt.addEventListener('load', () => {
-        loaded = true;
-      });
-
-      // 保險機制：超時未載入 → fallback
+      yt.addEventListener('load', () => { loaded = true; });
       setTimeout(() => { if(!loaded) showFallback(); }, FAILSAFE_MS);
-
-      // 手動切換按鈕
       btn && btn.addEventListener('click', showFallback);
     })();
   </script>
